@@ -1,0 +1,33 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# macOS
+.DS_Store
+
+# Nested git repository
+RLUCID-Enhancing-DDoS-Detection-Through-Noise-Regularized-Convolutional-Neural-Networks/
+
+# Large dataset files (exceeds GitHub 100MB limit)
+sample-dataset/*.pcap
+sample-dataset/*.hdf5
+sample-dataset/*.data
+
+# Model outputs (optional - uncomment if you want to exclude)
+# output/*.h5
+# output/*.csv
+
+# Virtual environment
+venv/
+env/
+.env
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Jupyter Notebook
+.ipynb_checkpoints/
