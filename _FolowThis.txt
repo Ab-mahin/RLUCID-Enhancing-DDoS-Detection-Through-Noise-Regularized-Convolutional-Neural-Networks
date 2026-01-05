@@ -1,0 +1,66 @@
+# From ALUCID folder
+
+# Step 1: parse pcaps -> .data
+python lucid_dataset_parser.py \
+  --dataset_type DOS2019 \
+  --dataset_folder ./sample-dataset/ \
+  --packets_per_flow 10 \
+  --dataset_id DOS2019 \
+  --traffic_type all \
+  --time_window 10
+
+# Step 2: .data -> train/val/test HDF5
+python lucid_dataset_parser.py \
+  --preprocess_folder ./sample-dataset/
+
+
+
+
+
+
+2. Train LUCID (single model, with robustness)
+
+
+/Users/ab_mahin/Documents/ALUCID/.venv/bin/python \
+  lucid_cnn.py \
+  --train ./sample-dataset/ \
+  --epochs 100 \
+  -cv 5 \
+  --adv_training
+
+
+
+
+
+
+
+3. Get original LUCID prediction dict on test set
+
+/Users/ab_mahin/Documents/ALUCID/.venv/bin/python \
+  lucid_cnn.py \
+  --predict ./sample-dataset/ \
+  --model ./output/10t-10n-DOS2019-LUCID.h5
+
+
+
+
+
+4. (Optional) Train more models for an ensemble
+
+mv output/10t-10n-DOS2019-LUCID.h5 output/10t-10n-DOS2019-LUCID_run1.h5
+# train again with different seed
+mv output/10t-10n-DOS2019-LUCID.h5 output/10t-10n-DOS2019-LUCID_run2.h5
+# etc.
+
+
+
+
+5. (Optional) Run ensemble evaluation
+
+/Users/ab_mahin/Documents/ALUCID/.venv/bin/python \
+  lucid_ensemble_predict.py \
+  --models "./output/10t-10n-DOS2019-LUCID.h5" \
+  --test "./sample-dataset/1*-test.hdf5"
+
+
+  /Users/ab_mahin/Documents/ALUCID/.venv/bin/python lucid_ensemble_predict.py --models ./output/10t-10n-DOS2019-LUCID.h5 --test "./sample-dataset/*-test.hdf5"
